@@ -44,8 +44,8 @@ public class RESClient {
         CallbackDelivery.i();
     }
 
-    public void setContext(Context context){
-        if(context instanceof Activity){
+    public void setContext(Context context) {
+        if (context instanceof Activity) {
             this.mActivity = new WeakReference<Activity>((Activity) context);
         }
     }
@@ -80,7 +80,7 @@ public class RESClient {
             dataCollecter = new RESFlvDataCollecter() {
                 @Override
                 public void collect(RESFlvData flvData, int type) {
-                    if(rtmpSender != null){
+                    if (rtmpSender != null) {
                         rtmpSender.feed(flvData, type);
                     }
                 }
@@ -103,9 +103,9 @@ public class RESClient {
                 rtmpSender.start(rtmpAddr == null ? coreParameters.rtmpAddr : rtmpAddr);
                 audioClient.start(dataCollecter);
                 LogTools.d("RESClient,startStreaming()");
-            }catch (Exception e){
-                if(mActivity.get() !=null){
-                    Toast.makeText(mActivity.get(),"可能没有权限",Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                if (mActivity.get() != null) {
+                    Toast.makeText(mActivity.get(), "可能没有权限", Toast.LENGTH_LONG).show();
                     mActivity.get().finish();
                 }
             }
@@ -160,25 +160,24 @@ public class RESClient {
      * @param surfaceTexture to rendering preview
      */
     public void startPreview(SurfaceTexture surfaceTexture, int visualWidth, int visualHeight) {
-        if(videoClient != null){
+        if (videoClient != null) {
             videoClient.startPreview(surfaceTexture, visualWidth, visualHeight);
         }
         LogTools.d("RESClient,startPreview()");
     }
 
     public void updatePreview(int visualWidth, int visualHeight) {
-        if(videoClient != null){
+        if (videoClient != null) {
             videoClient.updatePreview(visualWidth, visualHeight);
         }
         LogTools.d("RESClient,updatePreview()");
     }
 
     /**
-     *
      * @param releaseTexture true if you won`t reuse this surfaceTexture later
      */
     public void stopPreview(boolean releaseTexture) {
-        if(videoClient != null){
+        if (videoClient != null) {
             videoClient.stopPreview(releaseTexture);
         }
         LogTools.d("RESClient,stopPreview()");
@@ -259,6 +258,7 @@ public class RESClient {
     /**
      * get free percent of send buffer
      * return ~0.0 if the netspeed is not enough or net is blocked.
+     *
      * @return
      */
     public float getSendBufferFreePercent() {
@@ -357,17 +357,18 @@ public class RESClient {
      * @param connectionListener
      */
     public void setConnectionListener(RESConnectionListener connectionListener) {
-        if(rtmpSender != null) {
+        if (rtmpSender != null) {
             rtmpSender.setConnectionListener(connectionListener);
         }
     }
 
     /**
      * listener for video size change
+     *
      * @param videoChangeListener
      */
     public void setVideoChangeListener(RESVideoChangeListener videoChangeListener) {
-        if(videoClient != null){
+        if (videoClient != null) {
             videoClient.setVideoChangeListener(videoChangeListener);
         }
     }
@@ -406,6 +407,7 @@ public class RESClient {
     /**
      * Change video bitrate on the fly<br/>
      * call between {@link #startStreaming()} & {@link #stopStreaming()}
+     *
      * @param bitrate target bitrate bits/sec
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -415,6 +417,7 @@ public class RESClient {
 
     /**
      * get current bitrate
+     *
      * @return current bitrate bits/sec
      */
     public int getVideoBitrate() {
@@ -423,6 +426,7 @@ public class RESClient {
 
     /**
      * update fps on the fly.
+     *
      * @param fps
      */
     public void reSetVideoFPS(int fps) {
@@ -435,6 +439,7 @@ public class RESClient {
      * may restart camera.
      * will restart mediacodec.
      * will not interrupt streaming
+     *
      * @param targetVideoSize
      */
     public void reSetVideoSize(Size targetVideoSize) {
@@ -443,13 +448,13 @@ public class RESClient {
         }
         if (coreParameters.filterMode == RESCoreParameters.FILTER_MODE_SOFT) {
             throw new IllegalArgumentException("soft mode doesn`t support reSetVideoSize");
-        }else {
+        } else {
             videoClient.reSetVideoSize(targetVideoSize);
         }
     }
 
 
-    public RESRtmpSender getRtmpSender(){
+    public RESRtmpSender getRtmpSender() {
         return rtmpSender;
     }
 
@@ -513,11 +518,11 @@ public class RESClient {
         videoClient.setVideoEncoder(encoder);
     }
 
-    public void setMirror(boolean isEnableMirror,boolean isEnablePreviewMirror,boolean isEnableStreamMirror) {
-        videoClient.setMirror(isEnableMirror,isEnablePreviewMirror,isEnableStreamMirror);
+    public void setMirror(boolean isEnableMirror, boolean isEnablePreviewMirror, boolean isEnableStreamMirror) {
+        videoClient.setMirror(isEnableMirror, isEnablePreviewMirror, isEnableStreamMirror);
     }
 
-    public void setNeedResetEglContext(boolean bol){
+    public void setNeedResetEglContext(boolean bol) {
         videoClient.setNeedResetEglContext(bol);
     }
 

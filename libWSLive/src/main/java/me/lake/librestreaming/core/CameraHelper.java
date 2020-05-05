@@ -61,6 +61,13 @@ public class CameraHelper {
         coreParameters.previewMaxFps = fpsRanges.get(0)[1];
     }
 
+    /**
+     * 设置相机预览的宽高
+     *
+     * @param parameters
+     * @param coreParameters
+     * @param targetSize
+     */
     public static void selectCameraPreviewWH(Camera.Parameters parameters, RESCoreParameters coreParameters, Size targetSize) {
         List<Camera.Size> previewsSizes = parameters.getSupportedPreviewSizes();
         Collections.sort(previewsSizes, new Comparator<Camera.Size>() {

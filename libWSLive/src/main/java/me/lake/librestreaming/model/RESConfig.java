@@ -58,12 +58,11 @@ public class RESConfig {
         return res;
     }
 
-        /**
-         * set the filter mode.
-         *
-         * @param filterMode {@link FilterMode}
-         */
-
+    /**
+     * set the filter mode.
+     *
+     * @param filterMode {@link FilterMode}
+     */
     public void setFilterMode(int filterMode) {
         this.filterMode = filterMode;
     }
@@ -149,11 +148,11 @@ public class RESConfig {
         this.videoFPS = videoFPS;
     }
 
-    public int getVideoGOP(){
+    public int getVideoGOP() {
         return videoGOP;
     }
 
-    public void setVideoGOP(int videoGOP){
+    public void setVideoGOP(int videoGOP) {
         this.videoGOP = videoGOP;
     }
 

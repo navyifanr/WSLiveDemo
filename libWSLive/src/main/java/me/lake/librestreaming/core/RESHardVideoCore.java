@@ -104,7 +104,8 @@ public class RESHardVideoCore implements RESVideoCore {
             synchronized (syncIsLooping) {
                 if (!isPreviewing && !isStreaming) {
                     videoGLHander.removeMessages(VideoGLHandler.WHAT_DRAW);
-                    videoGLHander.sendMessageDelayed(videoGLHander.obtainMessage(VideoGLHandler.WHAT_DRAW, SystemClock.uptimeMillis() + loopingInterval), loopingInterval);
+                    videoGLHander.sendMessageDelayed(videoGLHander.obtainMessage(VideoGLHandler.WHAT_DRAW,
+                            SystemClock.uptimeMillis() + loopingInterval), loopingInterval);
                 }
                 isPreviewing = true;
             }

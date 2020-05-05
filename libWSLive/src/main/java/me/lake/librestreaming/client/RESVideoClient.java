@@ -54,6 +54,7 @@ public class RESVideoClient {
             Camera.Parameters parameters = camera.getParameters();
             CameraHelper.selectCameraPreviewWH(parameters, resCoreParameters, resConfig.getTargetPreviewSize());
             CameraHelper.selectCameraFpsRange(parameters, resCoreParameters);
+            //如果配置的视频帧率大于预览的最大帧率，则将配置的帧率改为预览的最大帧率
             if (resConfig.getVideoFPS() > resCoreParameters.previewMaxFps / 1000) {
                 resCoreParameters.videoFPS = resCoreParameters.previewMaxFps / 1000;
             } else {
@@ -443,6 +444,7 @@ public class RESVideoClient {
             vw = resCoreParameters.videoWidth;
             vh = resCoreParameters.videoHeight;
             float pr = ph / pw, vr = vh / vw;
+            //计算裁剪比率
             if (pr == vr) {
                 resCoreParameters.cropRatio = 0.0f;
             } else if (pr > vr) {

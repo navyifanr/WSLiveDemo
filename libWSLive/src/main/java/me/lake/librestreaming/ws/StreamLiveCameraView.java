@@ -46,12 +46,12 @@ public class StreamLiveCameraView extends FrameLayout {
 
     public StreamLiveCameraView(Context context) {
         super(context);
-        this.mContext=context;
+        this.mContext = context;
     }
 
     public StreamLiveCameraView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.mContext=context;
+        this.mContext = context;
     }
 
     public static synchronized RESClient getRESClient() {
@@ -63,16 +63,17 @@ public class StreamLiveCameraView extends FrameLayout {
 
     /**
      * 根据AVOption初始化&打开预览
+     *
      * @param avOption
      */
-    public void init(Context context , StreamAVOption avOption) {
+    public void init(Context context, StreamAVOption avOption) {
         if (avOption == null) {
             throw new IllegalArgumentException("AVOption is null.");
         }
         compatibleSize(avOption);
         resClient = getRESClient();
         setContext(mContext);
-        resConfig = StreamConfig.build(context,avOption);
+        resConfig = StreamConfig.build(context, avOption);
         boolean isSucceed = resClient.prepare(resConfig);
         if (!isSucceed) {
             Log.w(TAG, "推流prepare方法返回false, 状态异常.");
@@ -82,13 +83,18 @@ public class StreamLiveCameraView extends FrameLayout {
         addListenerAndFilter();
     }
 
+    /**
+     * 兼容手机相机的拍摄尺寸
+     *
+     * @param avOptions
+     */
     private void compatibleSize(StreamAVOption avOptions) {
-        Camera.Size cameraSize = CameraUtil.getInstance().getBestSize(CameraUtil.getFrontCameraSize(),Integer.parseInt("800"));
-        if(!CameraUtil.hasSupportedFrontVideoSizes){
-            if(null == cameraSize || cameraSize.width <= 0){
+        Camera.Size cameraSize = CameraUtil.getInstance().getBestSize(CameraUtil.getFrontCameraSize(), Integer.parseInt("800"));
+        if (!CameraUtil.hasSupportedFrontVideoSizes) {
+            if (null == cameraSize || cameraSize.width <= 0) {
                 avOptions.videoWidth = 720;
                 avOptions.videoHeight = 480;
-            }else{
+            } else {
                 avOptions.videoWidth = cameraSize.width;
                 avOptions.videoHeight = cameraSize.height;
             }
@@ -105,6 +111,7 @@ public class StreamLiveCameraView extends FrameLayout {
             textureView.setKeepScreenOn(true);
             textureView.setSurfaceTextureListener(surfaceTextureListenerImpl);
             Size s = resClient.getVideoSize();
+            //设置控件的宽高比
             textureView.setAspectRatio(AspectTextureView.MODE_OUTSIDE, ((double) s.getWidth() / s.getHeight()));
         }
     }
@@ -120,9 +127,9 @@ public class StreamLiveCameraView extends FrameLayout {
     /**
      * 是否推流
      */
-    public boolean isStreaming(){
-        if(resClient != null){
-           return resClient.isStreaming;
+    public boolean isStreaming() {
+        if (resClient != null) {
+            return resClient.isStreaming;
         }
         return false;
     }
@@ -130,8 +137,8 @@ public class StreamLiveCameraView extends FrameLayout {
     /**
      * 开始推流
      */
-    public void startStreaming(String rtmpUrl){
-        if(resClient != null){
+    public void startStreaming(String rtmpUrl) {
+        if (resClient != null) {
             resClient.startStreaming(rtmpUrl);
         }
     }
@@ -139,8 +146,8 @@ public class StreamLiveCameraView extends FrameLayout {
     /**
      * 停止推流
      */
-    public void stopStreaming(){
-        if(resClient != null){
+    public void stopStreaming() {
+        if (resClient != null) {
             resClient.stopStreaming();
         }
     }
@@ -150,8 +157,9 @@ public class StreamLiveCameraView extends FrameLayout {
      */
     private MediaMuxerWrapper mMuxer;
     private boolean isRecord = false;
-    public void startRecord(){
-        if(resClient != null){
+
+    public void startRecord() {
+        if (resClient != null) {
             resClient.setNeedResetEglContext(true);
             try {
                 mMuxer = new MediaMuxerWrapper(".mp4");    // if you record audio only, ".m4a" is also OK.
@@ -167,6 +175,7 @@ public class StreamLiveCameraView extends FrameLayout {
             }
         }
     }
+
     /**
      * 停止录制
      */
@@ -193,8 +202,8 @@ public class StreamLiveCameraView extends FrameLayout {
     /**
      * 切换摄像头
      */
-    public void swapCamera(){
-        if(resClient != null){
+    public void swapCamera() {
+        if (resClient != null) {
             resClient.swapCamera();
         }
     }
@@ -202,17 +211,17 @@ public class StreamLiveCameraView extends FrameLayout {
     /**
      * 摄像头焦距 [0.0f,1.0f]
      */
-    public void setZoomByPercent(float targetPercent){
-        if(resClient != null){
+    public void setZoomByPercent(float targetPercent) {
+        if (resClient != null) {
             resClient.setZoomByPercent(targetPercent);
         }
     }
 
     /**
-     *摄像头开关闪光灯
+     * 摄像头开关闪光灯
      */
-    public void toggleFlashLight(){
-        if(resClient != null){
+    public void toggleFlashLight() {
+        if (resClient != null) {
             resClient.toggleFlashLight();
         }
     }
@@ -220,8 +229,8 @@ public class StreamLiveCameraView extends FrameLayout {
     /**
      * 推流过程中，重新设置帧率
      */
-    public void reSetVideoFPS(int fps){
-        if(resClient != null){
+    public void reSetVideoFPS(int fps) {
+        if (resClient != null) {
             resClient.reSetVideoFPS(fps);
         }
     }
@@ -229,8 +238,8 @@ public class StreamLiveCameraView extends FrameLayout {
     /**
      * 推流过程中，重新设置码率
      */
-    public void reSetVideoBitrate(int bitrate){
-        if(resClient != null){
+    public void reSetVideoBitrate(int bitrate) {
+        if (resClient != null) {
             resClient.reSetVideoBitrate(bitrate);
         }
     }
@@ -238,20 +247,21 @@ public class StreamLiveCameraView extends FrameLayout {
     /**
      * 截图
      */
-    public void takeScreenShot(RESScreenShotListener listener){
-        if(resClient != null){
+    public void takeScreenShot(RESScreenShotListener listener) {
+        if (resClient != null) {
             resClient.takeScreenShot(listener);
         }
     }
 
     /**
      * 镜像
-     * @param isEnableMirror   是否启用镜像功能 总开关
-     * @param isEnablePreviewMirror  是否开启预览镜像
-     * @param isEnableStreamMirror   是否开启推流镜像
+     *
+     * @param isEnableMirror        是否启用镜像功能 总开关
+     * @param isEnablePreviewMirror 是否开启预览镜像
+     * @param isEnableStreamMirror  是否开启推流镜像
      */
-    public void setMirror(boolean isEnableMirror,boolean isEnablePreviewMirror,boolean isEnableStreamMirror) {
-        if(resClient != null) {
+    public void setMirror(boolean isEnableMirror, boolean isEnablePreviewMirror, boolean isEnableStreamMirror) {
+        if (resClient != null) {
             resClient.setMirror(isEnableMirror, isEnablePreviewMirror, isEnableStreamMirror);
         }
     }
@@ -260,8 +270,8 @@ public class StreamLiveCameraView extends FrameLayout {
     /**
      * 设置滤镜
      */
-    public void setHardVideoFilter(BaseHardVideoFilter baseHardVideoFilter){
-        if(resClient != null){
+    public void setHardVideoFilter(BaseHardVideoFilter baseHardVideoFilter) {
+        if (resClient != null) {
             resClient.setHardVideoFilter(baseHardVideoFilter);
         }
     }
@@ -283,8 +293,8 @@ public class StreamLiveCameraView extends FrameLayout {
     /**
      * 设置上下文
      */
-    public void setContext(Context context){
-        if(resClient != null){
+    public void setContext(Context context) {
+        if (resClient != null) {
             resClient.setContext(context);
         }
     }
@@ -292,14 +302,14 @@ public class StreamLiveCameraView extends FrameLayout {
     /**
      * destroy
      */
-    public void destroy(){
+    public void destroy() {
         if (resClient != null) {
             resClient.setConnectionListener(null);
             resClient.setVideoChangeListener(null);
-            if(resClient.isStreaming){
+            if (resClient.isStreaming) {
                 resClient.stopStreaming();
             }
-            if(isRecord()){
+            if (isRecord()) {
                 stopRecord();
             }
             resClient.destroy();
@@ -308,6 +318,7 @@ public class StreamLiveCameraView extends FrameLayout {
 
     /**
      * 添加推流状态监听
+     *
      * @param listener
      */
     public void addStreamStateListener(RESConnectionListener listener) {
@@ -316,14 +327,14 @@ public class StreamLiveCameraView extends FrameLayout {
         }
     }
 
-    RESConnectionListener ConnectionListener =new RESConnectionListener() {
+    RESConnectionListener ConnectionListener = new RESConnectionListener() {
         @Override
         public void onOpenConnectionResult(int result) {
-            if(result == 1){
-               resClient.stopStreaming();
+            if (result == 1) {
+                resClient.stopStreaming();
             }
 
-            for (RESConnectionListener listener: outerStreamStateListeners) {
+            for (RESConnectionListener listener : outerStreamStateListeners) {
                 listener.onOpenConnectionResult(result);
             }
         }
@@ -331,7 +342,7 @@ public class StreamLiveCameraView extends FrameLayout {
         @Override
         public void onWriteError(int errno) {
 
-            for (RESConnectionListener listener: outerStreamStateListeners) {
+            for (RESConnectionListener listener : outerStreamStateListeners) {
                 listener.onWriteError(errno);
             }
         }
@@ -339,7 +350,7 @@ public class StreamLiveCameraView extends FrameLayout {
         @Override
         public void onCloseConnectionResult(int result) {
 
-            for (RESConnectionListener listener: outerStreamStateListeners) {
+            for (RESConnectionListener listener : outerStreamStateListeners) {
                 listener.onCloseConnectionResult(result);
             }
         }
@@ -348,13 +359,13 @@ public class StreamLiveCameraView extends FrameLayout {
     RESVideoChangeListener VideoChangeListener = new RESVideoChangeListener() {
         @Override
         public void onVideoSizeChanged(int width, int height) {
-            if(textureView != null) {
+            if (textureView != null) {
                 textureView.setAspectRatio(AspectTextureView.MODE_INSIDE, ((double) width) / height);
             }
         }
     };
 
-    TextureView.SurfaceTextureListener surfaceTextureListenerImpl  = new TextureView.SurfaceTextureListener() {
+    TextureView.SurfaceTextureListener surfaceTextureListenerImpl = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
             if (resClient != null) {
